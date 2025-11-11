@@ -40,12 +40,14 @@ export const createUser = async (user: CreateUserParams) => {
 // GET USER BY ID
 export const getUser = async (userId: string) => {
   try {
-    const user = await users.get(userId);
+    const user = await users.get( userId );
     return parseStringify(user);
   } catch (error) {
     console.error("Error fetching user:", error);
+    return null; 
   }
 };
+
 
 // REGISTER PATIENT
 export const registerPatient = async ({

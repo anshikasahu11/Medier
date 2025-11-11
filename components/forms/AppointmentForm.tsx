@@ -102,7 +102,7 @@ const form = useForm({
     cancellationReason: values.cancellationReason,
   },
   type,
-  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // ✅ add this line
+  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, 
 };
 
 

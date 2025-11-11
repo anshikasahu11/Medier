@@ -4,13 +4,18 @@ import { redirect } from "next/navigation";
 import RegisterForm from "@/components/forms/RegisterForm";
 import { getPatient, getUser } from "@/lib/actions/patient.actions";
 
-const Register = async ({ params }: { params: Promise<{ userId: string }> }) => {
-  const { userId } = await params; // ✅ Await params
+const Register = async ({ params }: { params: Promise<{ userId?: string }> }) => {
+  const { userId } = await params; 
+
+  if (!userId) {
+    throw new Error("Missing userId in params — check your route URL");
+  }
 
   const user = await getUser(userId);
   const patient = await getPatient(userId);
 
   if (patient) redirect(`/patients/${userId}/new-appointment`);
+
 
   return (
     <div className="flex h-screen max-h-screen">
@@ -26,7 +31,7 @@ const Register = async ({ params }: { params: Promise<{ userId: string }> }) => 
 
           <RegisterForm user={user} />
 
-          <p className="copyright py-12">© 2024 CarePluse</p>
+          <p className="copyright py-12">© 2025 Medier</p>
         </div>
       </section>
 

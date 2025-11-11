@@ -4,9 +4,10 @@ import Link from "next/link";
 import { PatientForm } from "@/components/forms/PatientForm";
 import { PasskeyModal } from "@/components/PasskeyModal";
 
-export default async function Home({ searchParams }: SearchParamProps) {
-  const params = await searchParams;
-  const isAdmin = params?.admin === "true";
+const Home = async ({ searchParams }: { searchParams: Promise<{ admin?: string }> }) => {
+  const { admin } = await searchParams;
+  const isAdmin = admin === "true";
+
 
   return (
     <div className="flex h-screen max-h-screen">
@@ -44,4 +45,6 @@ export default async function Home({ searchParams }: SearchParamProps) {
       />
     </div>
   );
-}
+};
+
+export default Home;
