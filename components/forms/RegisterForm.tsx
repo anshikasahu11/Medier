@@ -43,9 +43,14 @@ const form = useForm<PatientFormType>({
     phone: user.phone,
   },
 });
+  console.log("💡 Form validation errors:", form.formState.errors);
+
 
 
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
+   console.log("✅ Form submitted:", values);
+
+
     setIsLoading(true);
 
     // Store file info in form data as
@@ -65,7 +70,7 @@ const form = useForm<PatientFormType>({
 
     try {
       const patient = {
-        userId: user.$id,
+        userId: user?.$id,
         name: values.name,
         email: values.email,
         phone: values.phone,
@@ -101,6 +106,7 @@ const form = useForm<PatientFormType>({
 
     setIsLoading(false);
   };
+  
 
   return (
     <Form {...form}>

@@ -149,6 +149,10 @@ export const updateAppointment = async ({
 // GET APPOINTMENT
 export const getAppointment = async (appointmentId: string) => {
   try {
+    if (!appointmentId) {
+  throw new Error("appointmentId is missing before updateDocument");
+}
+
     const appointment = await databases.getDocument(
       DATABASE_ID!,
       APPOINTMENT_TABLE_ID!,

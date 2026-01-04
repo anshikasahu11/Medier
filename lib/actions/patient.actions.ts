@@ -14,28 +14,29 @@ import {
 import { parseStringify } from "../utils";
 
 // CREATE APPWRITE USER
+// CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
   try {
-    // New method (Appwrite SDK v14+): use users.create() with minimal params
     const newUser = await users.create(
-      ID.unique(),
-      user.email,
-      user.phone,
-      undefined,
-      user.name
+      ID.unique(),        // correct userId
+      user.email,         // correct email
+      undefined,          // no password
+      user.name           // correct "name" argument
     );
 
     return parseStringify(newUser);
   } catch (error: any) {
-    // Handle already existing user
     if (error?.code === 409) {
-      const existingUser = await users.list([Query.equal("email", [user.email])]);
+      const existingUser = await users.list([
+        Query.equal("email", [user.email])
+      ]);
       return existingUser.users[0];
     }
 
     console.error("Error creating Appwrite user:", error);
   }
 };
+
 
 // GET USER BY ID
 export const getUser = async (userId: string) => {
@@ -77,10 +78,7 @@ export const registerPatient = async ({
       PATIENT_TABLE_ID!,
       ID.unique(),
       {
-        identificationDocumentId: file?.$id ?? null,
-        identificationDocumentUrl: file?.$id
-          ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view?project=${PROJECT_ID}`
-          : null,
+       
         ...patient,
       }
     );
@@ -98,7 +96,7 @@ export const getPatient = async (userId: string) => {
     const patients = await databases.listDocuments(
       DATABASE_ID!,
       PATIENT_TABLE_ID!,
-      [Query.equal("userId", [userId])]
+      [Query.equal("userId", userId)]
     );
 
     return parseStringify(patients.documents[0]);
@@ -106,3 +104,4 @@ export const getPatient = async (userId: string) => {
     console.error("Error fetching patient:", error);
   }
 };
+
